@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/listPreferredItemHeight">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="?screenMarginHorizontal"
+            android:layout_marginLeft="?screenMarginHorizontal"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/barrier2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Arstotzka" />
+
+        <TextView
+            android:id="@+id/sick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="?screenMarginHorizontal"
+            android:layout_marginRight="?screenMarginHorizontal"
+            android:text="@string/sick"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBottom_toTopOf="@+id/recovered"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/recovered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="?screenMarginHorizontal"
+            android:layout_marginRight="?screenMarginHorizontal"
+            android:text="@string/recovered"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBottom_toTopOf="@+id/dead"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/sick" />
+
+        <TextView
+            android:id="@+id/dead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="?screenMarginHorizontal"
+            android:layout_marginRight="?screenMarginHorizontal"
+            android:text="@string/dead"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/recovered" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="recovered,sick,dead"
+            tools:layout_editor_absoluteX="411dp" />
+
+        <TextView
+            android:id="@+id/sickValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8sp"
+            android:paddingEnd="8sp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBaseline_toBaselineOf="@+id/sick"
+            app:layout_constraintEnd_toStartOf="@+id/barrier"
+            tools:text="20300" />
+
+        <TextView
+            android:id="@+id/recoveredValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8sp"
+            android:paddingEnd="8sp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBaseline_toBaselineOf="@+id/recovered"
+            app:layout_constraintEnd_toStartOf="@+id/barrier"
+            tools:text="1200" />
+
+        <TextView
+            android:id="@+id/deadValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8sp"
+            android:paddingEnd="8sp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBaseline_toBaselineOf="@+id/dead"
+            app:layout_constraintEnd_toStartOf="@+id/barrier"
+            tools:text="0" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="deadValue,sickValue,recoveredValue"
+            tools:layout_editor_absoluteX="411dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

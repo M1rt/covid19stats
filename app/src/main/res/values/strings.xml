@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">COVID-19 Stats</string>
+
+    <string name="dead">Dead</string>
+    <string name="recovered">Recovered</string>
+    <string name="sick">Sick</string>
 </resources>
