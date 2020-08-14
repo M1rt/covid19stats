@@ -4,7 +4,7 @@
 
     <fragment
         android:id="@+id/root"
-        android:name="su.mirt.covid19stats.CountryListFragment"
+        android:name="su.mirt.covid19stats.countrylist.CountryListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

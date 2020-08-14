@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="country"
+            type="su.mirt.covid19stats.countrylist.Country" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeight">
@@ -15,6 +21,7 @@
             android:layout_marginStart="?screenMarginHorizontal"
             android:layout_marginLeft="?screenMarginHorizontal"
             android:singleLine="true"
+            android:text="@{country.name}"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/barrier2"
@@ -79,6 +86,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8sp"
             android:paddingEnd="8sp"
+            android:text="@{Integer.toString(country.sick)}"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintBaseline_toBaselineOf="@+id/sick"
             app:layout_constraintEnd_toStartOf="@+id/barrier"
@@ -90,6 +98,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8sp"
             android:paddingEnd="8sp"
+            android:text="@{Integer.toString(country.recovered)}"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintBaseline_toBaselineOf="@+id/recovered"
             app:layout_constraintEnd_toStartOf="@+id/barrier"
@@ -101,6 +110,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8sp"
             android:paddingEnd="8sp"
+            android:text="@{Integer.toString(country.dead)}"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintBaseline_toBaselineOf="@+id/dead"
             app:layout_constraintEnd_toStartOf="@+id/barrier"
