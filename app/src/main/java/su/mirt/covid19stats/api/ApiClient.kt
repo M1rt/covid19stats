@@ -23,8 +23,13 @@ class ApiClient private constructor(any: Any) {
         }
     }
 
-    suspend fun summary() =
-        client.get<Summary>("$BASE_URL/summary")
+    suspend fun summary(): Result<Summary> = call("$BASE_URL/summary")
+
+    private suspend inline fun <reified T> call(url: String): Result<T> = try {
+        Result.success(client.get(url))
+    } catch (e: Throwable) {
+        Result.failure(e)
+    }
 
     companion object : SingletonHolder<ApiClient, Any>(::ApiClient) {
         const val BASE_URL = "https://api.covid19api.com"
