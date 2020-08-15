@@ -51,6 +51,15 @@ android {
 		}
 	}
 
+	signingConfigs {
+		release {
+			storeFile file('covid19.jks')
+			storePassword System.getenv('KEYSTORE_PASSWORD')
+			keyAlias 'key0'
+			keyPassword System.getenv('KEYSTORE_KEY_PASSWORD')
+		}
+	}
+
 	packagingOptions {
 		// See https://github.com/Kotlin/kotlinx.serialization/issues/761
 		exclude("META-INF/*.kotlin_module")
