@@ -40,11 +40,14 @@ class CountryListViewModel(app: Application) : AndroidViewModel(app) {
             val db = getApplication<Application>().database()
             val countryDao = db.countryDao()
             countriesData.addSource(countryDao.countryListLive()) { newCountries ->
+                dataReady.value = newCountries.isNotEmpty()
                 countries = newCountries.map { Country(it) }
                 update()
             }
         }
     }
+
+    val dataReady = MutableLiveData<Boolean>().apply { value = false }
 
     init {
         viewModelScope.launch(Dispatchers.IO) { updateCountries() }

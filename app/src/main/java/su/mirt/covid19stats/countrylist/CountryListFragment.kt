@@ -1,19 +1,23 @@
 package su.mirt.covid19stats.countrylist
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.frag_country_list.countryList
 import su.mirt.covid19stats.R
+import su.mirt.covid19stats.databinding.FragCountryListBinding
 import java.util.Locale
 
-class CountryListFragment : Fragment(R.layout.frag_country_list) {
+class CountryListFragment : Fragment() {
     val viewModel by lazy(LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this).get(CountryListViewModel::class.java)
     }
@@ -33,6 +37,18 @@ class CountryListFragment : Fragment(R.layout.frag_country_list) {
                 return true
             }
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = DataBindingUtil.inflate<FragCountryListBinding>(
+        inflater, R.layout.frag_country_list, container, false
+    ).let { binding ->
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
