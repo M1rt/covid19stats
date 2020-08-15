@@ -4,6 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.withTransaction
 import kotlinx.coroutines.Dispatchers
@@ -12,16 +13,35 @@ import kotlinx.coroutines.withContext
 import su.mirt.covid19stats.R
 import su.mirt.covid19stats.api.ApiClient
 import su.mirt.covid19stats.db.database
+import java.util.Locale
 
 class CountryListViewModel(app: Application) : AndroidViewModel(app) {
     private val apiClient by lazy { ApiClient.getInstance(Unit) }
 
-    val countries = MediatorLiveData<List<Country>>().also {
+    val countryFilterText = MutableLiveData<String>().apply { value = "" }
+    val countries = MediatorLiveData<List<Country>>().also { countriesData ->
+        var countries: List<Country> = emptyList()
+        var filter = ""
+        fun update() {
+            countriesData.value =
+                if (filter.isEmpty()) {
+                    countries
+                } else {
+                    countries.filter {
+                        it.name.trim().toLowerCase(Locale.ROOT).indexOf(filter) >= 0
+                    }
+                }
+                    .sortedBy { it.name }
+        }
+
+        countriesData.addSource(countryFilterText) { filter = it; update() }
+
         viewModelScope.launch {
             val db = getApplication<Application>().database()
             val countryDao = db.countryDao()
-            it.addSource(countryDao.countryListLive()) { countries ->
-                it.value = countries.map { Country(it) }
+            countriesData.addSource(countryDao.countryListLive()) { newCountries ->
+                countries = newCountries.map { Country(it) }
+                update()
             }
         }
     }
