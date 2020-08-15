@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# See https://github.com/Kotlin/kotlinx.serialization#androidjvm
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class su.mirt.covid19stats.**$$serializer { *; }
+-keepclassmembers class su.mirt.covid19stats.** {
+    *** Companion;
+}
+-keepclasseswithmembers class su.mirt.covid19stats.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
