@@ -1,29 +1,42 @@
 package su.mirt.covid19stats.countrylist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.withTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import su.mirt.covid19stats.api.ApiClient
+import su.mirt.covid19stats.db.database
 
-class CountryListViewModel : ViewModel() {
+class CountryListViewModel(app: Application) : AndroidViewModel(app) {
     private val apiClient by lazy { ApiClient.getInstance(Unit) }
 
-    private val countries_ = MutableLiveData<List<Country>>()
-    val countries: LiveData<List<Country>> = countries_
+    val countries = MediatorLiveData<List<Country>>().also {
+        viewModelScope.launch {
+            val db = getApplication<Application>().database()
+            val countryDao = db.countryDao()
+            it.addSource(countryDao.countryListLive()) { countries ->
+                it.value = countries.map { Country(it) }
+            }
+        }
+    }
 
     init {
-        viewModelScope.launch(Dispatchers.Main) { updateCountries() }
+        viewModelScope.launch(Dispatchers.IO) { updateCountries() }
     }
 
     private suspend fun updateCountries() {
-        countries_.value = withContext(Dispatchers.IO) {
-            apiClient.summary()
+        val db = getApplication<Application>().database()
+        val countryDao = db.countryDao()
+        val summary = apiClient.summary()
+        db.withTransaction {
+            summary
                 .countries
-                .map { Country(it) }
+                .forEach { country ->
+                    countryDao.upsert(su.mirt.covid19stats.db.Country(country))
+                }
         }
     }
 }
